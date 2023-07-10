@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Inline Edit Table Example</title>
+    <style>
+      table {
+        border-collapse: collapse;
+      }
+
+      td {
+        padding: 5px;
+        border: 1px solid black;
+      }
+
+      .editable {
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body>
+    <div style="width: 100%; text-align: center; margin-top: 50px; margin-bottom: 30px;">
+<h2>Javascript inline edit</h2>
+    </div>
+    <table id="myTable" style="display:flex; justify-content: center;">
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Age</th>
+      </tr>
+      <tr>
+        <td>Ade</td>
+        <td>ade@gmail.com</td>
+        <td>30</td>
+      </tr>
+
+      <tr>
+        <td>Ola</td>
+        <td>ola@gmail.com</td>
+        <td>30</td>
+      </tr>
+
+      <tr>
+        <td>Adeola</td>
+        <td>adeola@gmail.com</td>
+        <td>30</td>
+      </tr>
+
+      <tr>
+        <td>Adeolu</td>
+        <td>adeolu@gmail.com</td>
+        <td>30</td>
+      </tr>
+
+      <tr>
+        <td>Adeojo</td>
+        <td>adeojo@gmail.com</td>
+        <td>30</td>
+      </tr>
+   
+    </table>
+
+    <script>
+   
+   var table = document.getElementById('myTable');
+   var cells = table.getElementsByTagName('td');
+
+    for(var i =0; i < cells.length; i++){
+      cells[i].onclick = function(){
+
+        if(this.hasAttribute('data-clicked')){
+           return;
+        }
+        this.setAttribute('data-clicked', 'yes');
+        this.setAttribute('data-text', this.innerHTML);
+
+
+        var input = document.createElement('input');
+        input.setAttribute('type', 'text');
+        input.value = this.innerHTML;
+        input.style.backgroundColor = "gold";
+
+
+        input.onblur = function(){
+          var td = input.parentElement;
+          var orig_text = input.parentElement.getAttribute('data-text');
+          var current_text = this.value;
+
+          if(orig_text != current_text){
+          //there are changes in the cell's text
+         //save to db with ajax
+
+         td.removeAttribute('data-clicked');
+         td.removeAttribute('data-text');
+         td.innerHTML = current_text;
+         console.log(orig_text + ' is change to ' + current_text);
+          }else{
+            td.removeAttribute('data-clicked');
+         td.removeAttribute('data-text');
+         td.innerHTML = orig_text;
+         console.log('No changes made');
+          }
+        }
+        input.onkeypress = function(){
+          if(event.keyCode == 13){
+            this.blur();
+          }
+        }
+        this.innerHTML = '';
+        this.append(input);
+        this.firstElementChild.select();
+      }
+    }
+    </script>
+  </body>
+</html>
+
